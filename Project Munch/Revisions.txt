@@ -1,0 +1,27 @@
+Since checkin date:
+
+Improved hitboxes on player and zombies
+Added zombie eating behavior + lose condition
+Improved weapon behaviors. Added rate of fire, ammunition, and reloading.
+Added several new sounds to the game.
+Tuned mechanics to increase the challenge of the game
+Improved backend and reorganized several functions and methods
+
+Revision 1.1 4/19/13	(Tyler Mitchell)
+-Added implementation for moving around a larger map surface
+-Game map image altered to include a boundary (black)
+-Changed player movement so the player stays centered
+-Changed zombie movement speed and made it so that zombies only update
+once every two clock cycles (gives player a slight movement advantage, balances
+the game mechanics more)
+-Zombie movement and spawn zones need to be altered still
+-Map boundaries need to be polished still
+-Player may not be a perfect circle, possible reason for rect position movement
+during rotation
+
+Revision 4/19/13 - Jonathan Byington
+
+-Refactored a lot of the code to make it cleaner and more object oriented. 
+-Pulled the new map code out of the main method and put it in it's own class to maintain readability.
+-Cleaned up a few bugs in the code and polished the version.
+-Zombie pathfinding is broken while we implement collisions and the new coordinant system for the big map. This is a work in progress.
