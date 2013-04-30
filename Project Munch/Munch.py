@@ -2,7 +2,7 @@
 
 #Import Modules
 #Added random to the import list. That's the only change here.
-import os, pygame, random, math, time, Player, Zombie, Weapons, Loader
+import os, pygame, random, math, time, Player, Zombie, Weapons, Loader, Flashlight
 from GameMap import GameMap
 from pygame.locals import *
 from pygame.compat import geterror
@@ -21,8 +21,16 @@ def main():
 	pygame.display.set_caption('Project Munch')
 	pygame.mouse.set_visible(0)
 	pygame.key.set_repeat(3, 3)
-
-	#gamemap is the larger map image surface
+	
+#Load and display the splash screen while everything loads
+	splash, splashRect = Loader.load_image('splashscreen.png', None)
+	splash = splash.convert()
+	screen.blit(splash, (0, 0))
+	pygame.display.flip()
+	
+	time.sleep(1)
+	
+#gamemap is the larger map image surface
 	mapobj = GameMap([1024, 768])
 	gamemap = pygame.Surface((mapobj.mapwidth, mapobj.mapheight))
 	gamemap.blit( mapobj.image, ( mapobj.mapcorner[0], mapobj.mapcorner[1] ) )
@@ -41,6 +49,7 @@ def main():
 	background = background.convert()
 	print ("Background created!")
 
+	
 #Display The Background
 	screen.blit(background, (0, 0))
 	pygame.display.flip()
@@ -61,6 +70,8 @@ def main():
 	bullets = weapons.ammunition
 	eat_sound = Loader.load_sound('eat.wav')
 	dead_sound = Loader.load_sound('dead.wav')
+	flashlightScreen = pygame.Surface(screen.get_size())
+	flashlightScreen.set_colorkey((10, 10, 10))
 	print ("Variables created!")
 	
 #Create the ammunition counter
@@ -146,10 +157,15 @@ def main():
 		#pygame.draw.line(background, (255, 0, 0), player.rect.center, pygame.mouse.get_pos(), 1)
 		screen.fill((0, 0, 0))
 		screen.blit(background, (0, 0))
-		screen.blit(text, textpos)		
 		playersprite.draw(screen)
 		zombies.draw(screen)
 		weaponsprite.draw(screen)
+		flashlightScreen.fill((0, 0, 0))
+		flashlightArms = Flashlight.updateLight(player.get_pos(), angle)
+		pygame.draw.circle(flashlightScreen, (10, 10, 10), player.get_pos(), 350, 0)
+		flashlightScreen.blit(text, textpos)
+		#pygame.draw.polygon(flashlightScreen, (30, 10, 10), (player.get_pos(), 200, 400), 0)
+		screen.blit(flashlightScreen, (0, 0))
 		pygame.display.flip()
 
 			
