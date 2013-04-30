@@ -26,14 +26,14 @@ class Zombie(pygame.sprite.Sprite):
 		self.move = [0, 0]
 		print ("Zombie loaded!")
 		
-	def update(self, playerpos):
-		self._walk(playerpos[0], playerpos[1])
+	def update(self, playerpos, mappos):
+		self._walk(playerpos[0], playerpos[1], mappos[0], mappos[1])
 		angle = math.atan2(self.rect.center[0]-playerpos[0], self.rect.center[1]-playerpos[1])
 		self._turn(math.degrees(angle))
 		#self._turn()
 	
 		
-	def _walk(self, playerx, playery):
+	def _walk(self, playerx, playery, mapx, mapy):
 		newpos = self.rect.move((self.move))
 		#Move the sprite for keydown values of walkx
 		if playerx > self.rect.right:
@@ -49,6 +49,20 @@ class Zombie(pygame.sprite.Sprite):
 			self.move[1] = -1
 		else: 
 			self.move[1] = 0
+			
+		if mapx > 0:
+			self.move[0] += -5
+		elif mapx < 0:
+			self.move[0] += 5
+		else:
+			self.move[0] += 0
+			
+		if mapy > 0:
+			self.move[1] += -5
+		elif mapy < 0:
+			self.move[1] += 5
+		else:
+			self.move[1] += 0
 		
 		newpos = self.rect.move((self.move))
 		self.rect = newpos

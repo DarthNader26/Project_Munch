@@ -117,7 +117,7 @@ def main():
 		mapobj.update(move_mapx, move_mapy)
 		#Gives player a slight movement speed advantage over zombies
 		if (pygame.time.get_ticks() / 60) % 2 == 0:
-			zombies.update(mapobj.mapcorner)
+			zombies.update(player.get_pos(), [move_mapx, move_mapy])
 
 		weapons.update()
 		

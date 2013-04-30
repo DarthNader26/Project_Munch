@@ -10,7 +10,6 @@ class Player(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 		self.original_image, self.rect = Loader.load_image('Player.png', -1)
-		self.rect = self.rect.inflate(-10, -10)
 		self.image = self.original_image
 		screen = pygame.display.get_surface()
 		self.area = screen.get_rect()
@@ -18,7 +17,6 @@ class Player(pygame.sprite.Sprite):
 		self.move = [0, 0]
 		self.dir = 0.0
 		print ("Player loaded!")
-		print self.rect
 		
 	def get_pos(self):
 		position = self.rect.center
@@ -29,5 +27,6 @@ class Player(pygame.sprite.Sprite):
 		oldCenter = self.rect.center
 		self.dir = amount
 		self.image = pygame.transform.rotate(self.original_image, self.dir)
+		self.rect = self.image.get_rect()
 		self.rect.center = oldCenter
 		print self.image.get_rect()
