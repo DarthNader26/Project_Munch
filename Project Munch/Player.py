@@ -30,4 +30,3 @@ class Player(pygame.sprite.Sprite):
 		self.image = pygame.transform.rotate(self.original_image, self.dir)
 		self.rect = self.image.get_rect()
 		self.rect.center = oldCenter
-		print self.image.get_rect()
