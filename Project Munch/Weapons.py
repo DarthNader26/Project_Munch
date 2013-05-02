@@ -9,8 +9,8 @@ class Weapons(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 		self.image, self.rect = Loader.load_image('crosshair.png', -1)
-		self.rateOfFire = 60
-		self.ammunition = 10
+		self.rateOfFire = 30
+		self.ammunition = 6
 		self.weapons_sound = Loader.load_sound('pow.wav')
 		self.weapons_empty = Loader.load_sound('nomorebullets.wav')
 		self.weapons_reloading = Loader.load_sound('reloading.wav')
@@ -41,8 +41,8 @@ class Weapons(pygame.sprite.Sprite):
 
 	def reload(self):
 		self.reloading = True
-		self.ammunition = 10
-		self.reloadframes = 180
+		self.ammunition = 6
+		self.reloadframes = 100
 		pygame.mixer.stop()
 		self.weapons_reloading.play()
 			
