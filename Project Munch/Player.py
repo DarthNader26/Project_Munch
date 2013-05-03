@@ -30,3 +30,16 @@ class Player(pygame.sprite.Sprite):
 		self.image = pygame.transform.rotate(self.original_image, self.dir)
 		self.rect = self.image.get_rect()
 		self.rect.center = oldCenter
+
+	def checkbounds(self, background):
+		#checks to see if player has run into a brown part of the map
+		if(background.get_at((self.rect.midtop[0],self.rect.midtop[1])) == (185, 122, 87, 255)):
+			return 1
+		elif(background.get_at((self.rect.midbottom[0],self.rect.midbottom[1])) == (185, 122, 87, 255)):
+			return 2
+		elif(background.get_at((self.rect.midleft[0],self.rect.midleft[1])) == (185, 122, 87, 255)):
+			return 3
+		elif(background.get_at((self.rect.midright[0],self.rect.midright[1])) == (185, 122, 87, 255)):
+			return 4
+		else:
+			return 0

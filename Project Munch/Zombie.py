@@ -18,7 +18,7 @@ class Zombie(pygame.sprite.Sprite):
                 self.area = screen.get_rect()
                 self.health = 1
                 self.direction = 0
-                self.range = 256
+                self.range = 350
                 self.speed = 2
                 self.alert = False
                 self.attention = 30
@@ -59,7 +59,7 @@ class Zombie(pygame.sprite.Sprite):
                 self.move = [0, 0]
                 print ("Zombie loaded!")
                 
-        def update(self, playerpos, mappos):
+        def update(self, playerpos, mappos, background):
                 self._hunt(playerpos)
                 if self.alert:
                         angle = math.atan2(self.rect.center[0]-playerpos[0], self.rect.center[1]-playerpos[1])
@@ -67,9 +67,9 @@ class Zombie(pygame.sprite.Sprite):
                         self.direction = angle
                         self._walk(playerpos[0], playerpos[1], mappos[0], mappos[1])
                 else:
-                        self._wander()
+						self._wander(mappos[0], mappos[1], background)
                         #comment out the next line to check for AI working
-                        self._walk(playerpos[0], playerpos[1], mappos[0], mappos[1])
+                        #self._walk(playerpos[0], playerpos[1], mappos[0], mappos[1])
                 
         def _walk(self, playerx, playery, mapx, mapy):
                 newpos = self.rect.move((self.move))
@@ -115,35 +115,77 @@ class Zombie(pygame.sprite.Sprite):
                 self.image = pygame.transform.rotate(self.original_image, self.dir)
                 self.rect.center = oldCenter
 
-        def _wander(self):
-                self.timer += 1
-                if self.timer == self.attention:
-                        self.timer = 0
-                        delta = random.randrange(-90, 90)
-                        angle = self.direction + delta
-                        self._turn(math.degrees(angle))
-                        self.direction = angle
+        def _wander(self, mapx, mapy, background):
+			self.timer += 1
+			if self.timer == self.attention:
+					self.timer = 0
+					delta = random.randrange(-90, 90)
+					angle = self.direction + delta
+					self._turn(math.degrees(angle))
+					self.direction = angle
 
-                if self.direction > 0 and self.direction < 180:
-                        deltaX = -1
-                elif self.direction < 0 and self.direction > -180:
-                        deltaX = 1
-                else:
-                        deltaX = 0
-                if self.direction < 90 and self.direction > -90:
-                        deltaY = -1
-                elif self.direction > 90 and self.direction < -90:
-                        deltaY = 1
-                else:
-                        deltaY = 0
+			if self.direction > 0 and self.direction < 180:
+					deltaX = -1
+			elif self.direction < 0 and self.direction > -180:
+					deltaX = 1
+			else:
+					deltaX = 0
+			if self.direction < 90 and self.direction > -90:
+					deltaY = -1
+			elif self.direction > 90 and self.direction < -90:
+					deltaY = 1
+			else:
+					deltaY = 0
+			
+                        self.move[0] = deltaX 
+                        self.move[1] = deltaY
+			#collidecheck = self._checkbounds(background)
+			#if (collidecheck == 0):
+			#	self.move[0] = deltaX 
+			#	self.move[1] = deltaY
+			#elif (collidecheck == 1):
+			#	self.move[0] = 0
+			#	self.move[1] = 1
+			#elif (collidecheck == 2):
+			#	self.move[0] = 0
+			#	self.move[1] = -1
+			#elif (collidecheck == 3):
+			#	self.move[0] = 1
+			#	self.move[1] = 0
+			#elif (collidecheck == 4):
+			#	self.move[0] = 0
+			#	self.move[1] = -1
 
-                self.move[0] = deltaX 
-                self.move[1] = deltaY
-                
-                newpos = self.rect.move((self.move))
-                self.rect = newpos
-                        
-                
+			if mapx > 0:
+					self.move[0] += -5
+			elif mapx < 0:
+					self.move[0] += 5
+			else:
+					self.move[0] += 0
+					
+			if mapy > 0:
+					self.move[1] += -5
+			elif mapy < 0:
+					self.move[1] += 5
+			else:
+					self.move[1] += 0
+
+			newpos = self.rect.move((self.move))
+			self.rect = newpos
+			
+	#def _checkbounds(self, background):
+		#checks to see if player has run into a brown part of the map
+		#if(background.get_at((self.rect.midtop[0],self.rect.midtop[1])) == (185, 122, 87, 255)):
+		#	return 1
+		#elif(background.get_at((self.rect.midbottom[0],self.rect.midbottom[1])) == (185, 122, 87, 255)):
+		#	return 2
+		#elif(background.get_at((self.rect.midleft[0],self.rect.midleft[1])) == (185, 122, 87, 255)):
+		#	return 3
+		#elif(background.get_at((self.rect.midright[0],self.rect.midright[1])) == (185, 122, 87, 255)):
+		#	return 4
+		#else:
+		#	return 0
+				
         def _hunt(self, playerpos):
                 arm1 = [self.rect.center[0], self.rect.center[1]]
                 arm2 = [self.rect.center[0], self.rect.center[1]]
@@ -165,4 +207,3 @@ class Zombie(pygame.sprite.Sprite):
                         self.timer = 0
                 else:
                         self.alert = False
-
